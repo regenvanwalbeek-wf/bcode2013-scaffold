@@ -1,5 +1,6 @@
 package teamxxx.robot;
 
+import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 
 public class ArtilleryAI extends AbstractRobotAI
@@ -10,7 +11,7 @@ public class ArtilleryAI extends AbstractRobotAI
     }
 
     @Override
-    public void run()
+    public void run() throws GameActionException
     {
 
     }
