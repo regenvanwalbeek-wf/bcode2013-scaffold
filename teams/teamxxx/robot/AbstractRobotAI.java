@@ -22,7 +22,7 @@ public abstract class AbstractRobotAI implements IRobotAI
 
     public boolean hasMine(MapLocation location) throws GameActionException
     {
-        return (robotController.senseMine(location) == null);
+        return (robotController.senseMine(location) != null);
     }
 
     public boolean hasDangerousMine(MapLocation location) throws GameActionException

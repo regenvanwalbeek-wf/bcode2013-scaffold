@@ -20,11 +20,15 @@ public class RobotPlayer
 		{
 			try
 			{
-				robotAI.run();
+				boolean success = robotAI.run();
 
-				// TODO - is it worth always deferring this to the AI? _might_ give tighter control of turns in certain situations, especially around yieling for multiple turns? maybe not, need to think about this some more.
 				// Yield if the AI can't do anything
-				rc.yield();
+				if (!success)
+				{
+					rc.setIndicatorString(0, "I didn't do anything this turn :(");
+					rc.yield();
+				}
+				rc.setIndicatorString(0, "");
 			}
 			catch(Exception e)
 			{

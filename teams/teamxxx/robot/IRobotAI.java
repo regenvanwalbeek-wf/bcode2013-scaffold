@@ -6,7 +6,8 @@ public interface IRobotAI
 {
     /**
      * Runs the robot AI
+     * @return True if the AI successfully found something to do. False otherwise.
      */
-    void run() throws GameActionException;
+    boolean run() throws GameActionException;
 
 }

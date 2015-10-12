@@ -11,8 +11,8 @@ public class ArtilleryAI extends AbstractRobotAI
     }
 
     @Override
-    public void run() throws GameActionException
+    public boolean run() throws GameActionException
     {
-
+        return false;
     }
 }

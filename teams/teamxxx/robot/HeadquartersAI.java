@@ -2,6 +2,7 @@ package teamxxx.robot;
 
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
+import battlecode.common.GameConstants;
 import battlecode.common.RobotController;
 import teamxxx.util.DirectionIterator;
 
@@ -15,17 +16,15 @@ public class HeadquartersAI extends AbstractRobotAI
     }
 
     @Override
-    public void run() throws GameActionException {
-        if (!robotController.isActive())
-            return;
-
+    public boolean run() throws GameActionException {
         Direction spawnDirection = getSpawnDirection();
         if (spawnDirection == null)
-            return;
+            return false;
 
         robotController.spawn(spawnDirection);
 
-        // TODO yield. How many times? equation...or maybe it's active while spawning and doesnt matter...
+        yield(GameConstants.HQ_SPAWN_DELAY); // TODO yielding will change if builiding suppliers...equation...or maybe just use isActive and dont worry about ever yielding..
+        return true;
     }
 
 
