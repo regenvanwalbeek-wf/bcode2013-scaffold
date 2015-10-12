@@ -56,6 +56,21 @@ public abstract class AbstractRobotAI implements IRobotAI
         return cachedTeam;
     }
 
+    private Team cachedEnemyTeam;
+    protected Team getEnemyTeam()
+    {
+        if (cachedEnemyTeam == null)
+        {
+            Team team = getTeam();
+            if (team == Team.A)
+                return Team.B;
+            else
+                return Team.A;
+        }
+
+        return cachedEnemyTeam;
+    }
+
     private MapLocation cachedEnemyHQLocation;
     protected MapLocation getEnemyHQLocation()
     {

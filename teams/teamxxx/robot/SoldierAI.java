@@ -18,6 +18,10 @@ public class SoldierAI extends AbstractRobotAI
         clearDangerousMinesOnLocation(targetLocation);
 
         if (!robotController.canMove(targetDirection)) {
+            // If there's an adjacent enemy, attack!
+            if (robotController.senseNearbyGameObjects(Robot.class, 1, getEnemyTeam()).length > 0)
+                return true;
+
             if (hasMine(robotController.getLocation()))
                 return false;
 
