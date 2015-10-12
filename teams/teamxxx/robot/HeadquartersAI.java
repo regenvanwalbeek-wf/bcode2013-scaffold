@@ -32,13 +32,11 @@ public class HeadquartersAI extends AbstractRobotAI
     private Direction getSpawnDirection() throws GameActionException {
         // Try to spawn in the direction toward the enemy. Else get the next available square.
         Direction towardEnemyHQ = calcDirectionClosestToEnemyHQ();
-        if (canSpawnRobotInDirection(towardEnemyHQ))
-            return towardEnemyHQ;
 
-        Iterator iter = new DirectionIterator();
+        Iterator iter = new DirectionIterator(towardEnemyHQ);
         while (iter.hasNext()) {
             Direction nextDirection = (Direction) iter.next();
-            if (nextDirection != towardEnemyHQ && canSpawnRobotInDirection(nextDirection))
+            if (canSpawnRobotInDirection(nextDirection))
                 return nextDirection;
         }
 

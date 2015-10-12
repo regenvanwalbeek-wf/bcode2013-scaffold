@@ -1,6 +1,9 @@
 package teamxxx.robot;
 
 import battlecode.common.*;
+import teamxxx.util.DirectionIterator;
+
+import java.util.Iterator;
 
 public class SoldierAI extends AbstractRobotAI
 {
@@ -18,24 +21,40 @@ public class SoldierAI extends AbstractRobotAI
         clearDangerousMinesOnLocation(targetLocation);
 
 
-        if (!robotController.canMove(targetDirection))
-            return;
-
-        robotController.move(targetDirection);
-
-        // TODO yield how long?
-
+        if (!robotController.canMove(targetDirection)) {
+            placeMineTowardDirection(targetDirection);
+        } else {
+            robotController.move(targetDirection);
+            // TODO yield how long?
+        }
 
     }
 
     private void clearDangerousMinesOnLocation(MapLocation location) throws GameActionException
     {
-        boolean dangerousMine = hasDangerousMine(location);
-        if (!dangerousMine)
+        boolean hasDangerousMine = hasDangerousMine(location);
+        if (!hasDangerousMine)
             return;
 
         robotController.defuseMine(location);
 
         yield(GameConstants.MINE_DEFUSE_DELAY);
+    }
+
+
+    private void placeMineTowardDirection(Direction targetDirection) throws GameActionException
+    {
+        Iterator directionIter = new DirectionIterator(targetDirection);
+        while (directionIter.hasNext())
+        {
+            Direction nextDirection = (Direction) directionIter.next();
+            MapLocation targetLocation = robotController.getLocation().add(nextDirection);
+            if (!hasMine(targetLocation))
+            {
+                robotController.layMine();
+                yield(GameConstants.MINE_LAY_DELAY);
+                break;
+            }
+        }
     }
 }
