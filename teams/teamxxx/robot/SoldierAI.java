@@ -58,10 +58,7 @@ public class SoldierAI extends AbstractRobotAI
     // TODO make this "closest"? just have to change that static to do a little bit more calculation. It's pretty expensive it seems...
     private Direction getMineFreeDirectionCloserToHQ() throws GameActionException
     {
-        int before = Clock.getBytecodesLeft();
         ArrayList<Direction> directionsCloserToHQ = DirectionUtil.getDirectionsCloserAndEquidistantToTarget(robotController.getLocation(), getEnemyHQLocation());
-        int after = Clock.getBytecodesLeft();
-        robotController.setIndicatorString(2, "bytecodes" + (before - after));
         for (Direction direction : directionsCloserToHQ)
         {
             boolean hasDangerousMine = hasDangerousMine(robotController.getLocation().add(direction));

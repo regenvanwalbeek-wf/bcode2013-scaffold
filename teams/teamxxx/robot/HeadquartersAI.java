@@ -1,15 +1,20 @@
 package teamxxx.robot;
 
-import battlecode.common.Direction;
-import battlecode.common.GameActionException;
-import battlecode.common.GameConstants;
-import battlecode.common.RobotController;
+import battlecode.common.*;
 import teamxxx.util.DirectionIterator;
 
 import java.util.Iterator;
 
 public class HeadquartersAI extends AbstractRobotAI
 {
+    private static final int LARGE_MAP_THRESHOLD = 10;
+
+    private static final int INITIAL_ARMY_SIZE = 5;
+
+    private boolean isLargeMap = false;
+
+
+
     public HeadquartersAI(RobotController robotController)
     {
         super(robotController);
@@ -17,6 +22,30 @@ public class HeadquartersAI extends AbstractRobotAI
 
     @Override
     public boolean run() throws GameActionException {
+        initMapSize();
+
+
+        for (int soldiersCreated = 0; soldiersCreated < INITIAL_ARMY_SIZE; soldiersCreated++)
+        {
+            boolean soldierSpawned = spawnSoldier();
+            // TODO what happens in !soldierSpawned? This is where the research/selectors would be useful
+        }
+
+        if (isLargeMap) {
+            researchPickaxe();
+            researchDefusion();
+        }
+
+
+        while (true) {
+            spawnSoldier();
+        }
+
+
+//        return true;
+    }
+
+    private boolean spawnSoldier() throws GameActionException {
         Direction spawnDirection = getSpawnDirection();
         if (spawnDirection == null)
             return false;
@@ -55,5 +84,29 @@ public class HeadquartersAI extends AbstractRobotAI
             return false;
 
         return true;
+    }
+
+    private void researchPickaxe() throws GameActionException {
+        for (int turnsResarched = 0; turnsResarched < Upgrade.PICKAXE.numRounds; turnsResarched++) {
+            robotController.researchUpgrade(Upgrade.PICKAXE);
+            yield(1);
+        }
+    }
+
+    private void researchDefusion() throws GameActionException {
+        for (int turnsResarched = 0; turnsResarched < Upgrade.DEFUSION.numRounds; turnsResarched++) {
+            robotController.researchUpgrade(Upgrade.DEFUSION);
+            yield(1);
+        }
+    }
+
+    private void initMapSize() {
+        MapLocation enemyLocation = getEnemyHQLocation();
+        MapLocation friendlyLocation = robotController.getLocation();
+        int distanceToEnemy = friendlyLocation.distanceSquaredTo(enemyLocation);
+        if (distanceToEnemy > LARGE_MAP_THRESHOLD)
+            isLargeMap = true;
+
+        robotController.setIndicatorString(2, "" + isLargeMap);
     }
 }
